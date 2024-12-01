@@ -1,21 +1,34 @@
+import kotlin.math.abs
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    val (list1, list2) = readInput("Day01").map { it.split("   ").map { it.toInt() } }.transpose()
+
+    // Part 1
+    val (list1Sorted, list2Sorted) = list1.sorted() to list2.sorted()
+    var sum = 0
+    for (i in list1Sorted.indices) {
+        sum += abs(list1Sorted[i] - list2Sorted[i])
     }
+    println(sum)
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    // Part2
+    val similarityMap = mutableMapOf<Int, Int>()
+    val similarity = list1.sumOf {
+        similarityMap.getOrPut(it) {
+            it * list2.count { i -> it == i }
+        }
     }
+    println(similarity)
+}
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+fun <T> List<List<T>>.transpose(): List<List<T>> {
+    var transposed = mutableListOf<List<T>>()
+    for (i in first().indices) {
+        val col: MutableList<T> = mutableListOf()
+        forEach { row ->
+            col.add(row[i])
+        }
+        transposed.add(col)
+    }
+    return transposed
 }
