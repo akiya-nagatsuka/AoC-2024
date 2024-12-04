@@ -1,6 +1,7 @@
 fun main() {
     val lines = readInput("Day04")
 
+    // Part1
     val horizontalLines = lines.map { it.toCharArray().toList() }
     val verticalLines = horizontalLines.transpose()
     val horizontal: List<List<Char>> = horizontalLines.map { it.windowed(4) }.flatten()
@@ -43,4 +44,23 @@ fun main() {
     val result1 = allLines.count { chars -> chars.joinToString("").let { it == "XMAS" || it.reversed() == "XMAS" } }
 
     result1.println()
+
+    // Part2
+    var result2 = 0
+    lines.forEachIndexed { y, line ->
+        line.forEachIndexed { x, char ->
+            if (char == 'A') {
+                listOf(
+                    listOf(Point(x - 1, y - 1), Point(x + 1, y + 1)),
+                    listOf(Point(x - 1, y + 1), Point(x + 1, y - 1)),
+                ).all {
+                    it.mapNotNull { lines.getOrNull(it.y)?.getOrNull(it.x) }.joinToString("").let { it == "SM" || it == "MS" }
+                }.let { bool -> if (bool) result2++ }
+            }
+        }
+    }
+
+    result2.println()
 }
+
+data class Point(val x: Int, val y: Int)
