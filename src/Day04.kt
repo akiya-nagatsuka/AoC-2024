@@ -24,8 +24,8 @@ fun main() {
 
     for (i in 0..<additionalWidth) {
         var diagonal = mutableListOf<Char>()
-        for (rowIndex in 0..i) {
-            val columnIndex = i - rowIndex
+        for (columnIndex in 0..i) {
+            val rowIndex = lines.size - 1 - i + columnIndex
             val row = lines.getOrNull(rowIndex)
             if (row == null) continue
             val symbol = row.getOrNull(columnIndex)
